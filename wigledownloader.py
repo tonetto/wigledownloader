@@ -120,7 +120,7 @@ class WigleDownloader:
         """
         ## We either call compute_intervals() or parse_coordfile()
         if self.coordfile:
-            self.parse_coordfile()
+            self.parse_coordfile(self.coordfile)
         else:
             self.compute_intervals()
 
@@ -278,12 +278,16 @@ class WigleDownloader:
         lat1,lat2,lon1,lon2
 
         """
+        print >> sys.stdout, 'Parsing coord.remain file.'
         with open(coordfile) as f:
             line = f.readline()
             while line:
                 COORDS = line.strip().split(',')
                 assert len(COORDS) == 4, 'Something is wrong with coord.remain file.'
                 self.INTERVALS.append(tuple(COORDS))
+                line = f.readline()
+
+        print >> sys.stdout, 'Found {0} subdivisions to download'.format(len(self.INTERVALS))
         
 
 
